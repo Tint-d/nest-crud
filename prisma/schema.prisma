@@ -19,7 +19,7 @@ enum Role {
 }
 
 model POST {
-  id          String   @id @default(uuid())
+  id          String   @id @unique @default(uuid())
   enabled     Boolean  @default(true)
   remove      Boolean  @default(false)
   title       String
@@ -31,15 +31,14 @@ model POST {
 }
 
 model User {
-  id                   String   @id @default(uuid())
-  enabled              Boolean  @default(true)
-  remove               Boolean  @default(false)
-  name                 String
-  email                String
-  password             String
-  passwordConfirmation String   @map("password_confirmation")
-  role                 Role     @default(USER)
-  posts                POST[]
-  createdAt            DateTime @default(now()) @map("created_at")
-  updatedAt            DateTime @updatedAt @map("updated_at")
+  id        String   @id @unique @default(uuid())
+  enabled   Boolean  @default(true)
+  remove    Boolean  @default(false)
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(USER)
+  posts     POST[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 }

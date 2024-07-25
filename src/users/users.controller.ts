@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Query,
   UsePipes,
@@ -24,5 +25,11 @@ export class UserController {
   @UsePipes(new ValidationPipe({ transform: true }))
   async getAllUsers(@Query() getAllUserDto: GetAllUserDto) {
     return this.userService.getAllUsers(getAllUserDto);
+  }
+
+  @Get(':id')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async getUserById(@Param('id') id: string) {
+    return this.userService.getUserById(id);
   }
 }

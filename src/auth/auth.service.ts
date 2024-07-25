@@ -1,13 +1,24 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserService } from 'src/users/users.service';
-
-export type User = any;
+import { Injectable, BadRequestException } from '@nestjs/common';
+import { AuthRepository } from './repository/auth.repository';
+import { AuthDto } from './dto/auth.dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly authRepository: AuthRepository) {}
 
-  async signIn(username: string, pass: string) {
-    // const user = this.userService.getUsers();
+  async register(dto: AuthDto) {
+    const { password, passwordConfirmation, ...userData } = dto;
+
+    if (password !== passwordConfirmation) {
+      throw new BadRequestException('Passwords do not match');
+    }
+
+    const data: Prisma.UserCreateInput = {
+      ...userData,
+      password,
+    };
+
+    return this.authRepository.register(data);
   }
 }
