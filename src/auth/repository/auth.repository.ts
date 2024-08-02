@@ -5,12 +5,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Prisma } from '@prisma/client';
+import { Prisma, Role } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
 import { AuthDto } from '../dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { jwtSecert } from 'src/utils/constant/constants';
-import { Response } from 'express';
 import { LoginResponse } from '../entites/login-response.entity';
 import { UserData } from '../dto/user-data.dto';
 
@@ -71,7 +70,11 @@ export class AuthRepository {
       throw new BadRequestException('Wrong Password!');
     }
 
-    const token = await this.generateToken(foundUser.id, foundUser.email);
+    const token = await this.generateToken(
+      foundUser.id,
+      foundUser.email,
+      foundUser.role,
+    );
 
     return new LoginResponse({
       success: true,
@@ -86,8 +89,12 @@ export class AuthRepository {
     });
   }
 
-  private async generateToken(id: string, email: string) {
-    const payload = { id, email };
+  async logout() {
+    // return res.send({ message: 'Logged out succefully' });
+  }
+
+  private async generateToken(id: string, email: string, role: Role) {
+    const payload = { id, email, role };
     return await this.jwt.signAsync(payload, {
       secret: jwtSecert,
     });
