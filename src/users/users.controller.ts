@@ -26,10 +26,10 @@ export class UserController {
   async createUser(@Body() data: Prisma.UserCreateInput): Promise<User> {
     return this.userService.createUser(data);
   }
+  // @Roles('ADMIN')
 
   @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
   @UsePipes(new ValidationPipe({ transform: true }))
   async getAllUsers(@Query() getAllUserDto: GetAllUserDto) {
     return this.userService.getAllUsers(getAllUserDto);

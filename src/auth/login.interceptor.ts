@@ -17,6 +17,8 @@ export class LoginInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       map((data) => {
+        console.log('data =>', data);
+
         response.cookie('token', data.token);
         response.send(data);
       }),

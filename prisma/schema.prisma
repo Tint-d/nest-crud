@@ -31,14 +31,17 @@ model POST {
 }
 
 model User {
-  id        String   @id @unique @default(uuid())
-  enabled   Boolean  @default(true)
-  remove    Boolean  @default(false)
-  name      String
-  email     String   @unique
-  password  String
-  role      Role     @default(USER)
-  posts     POST[]
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id               String   @id @unique @default(uuid())
+  enabled          Boolean  @default(true)
+  remove           Boolean  @default(false)
+  name             String
+  email            String   @unique
+  password         String
+  role             Role     @default(USER)
+  posts            POST[]
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  twoFactorEnabled Boolean  @default(true)
+  twoFactorSecret  String?
+  refreshToken     String?
 }

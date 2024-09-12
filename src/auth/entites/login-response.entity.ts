@@ -1,5 +1,6 @@
 import { Exclude, Expose, Type } from 'class-transformer';
 import { UserData } from '../dto/user-data.dto';
+import { TokenResponse } from '../dto/token.dto';
 
 @Exclude()
 export class LoginResponse {
@@ -10,7 +11,8 @@ export class LoginResponse {
   message: string;
 
   @Expose()
-  token: string;
+  @Type(() => TokenResponse)
+  token: TokenResponse;
 
   @Expose()
   @Type(() => UserData)
